@@ -230,12 +230,14 @@ module ClosePoints(pointarrays) {
 
 // This creates a vertical rod at the origin with external threads.  It uses
 // metric standards by default.
-module ScrewThread(outer_diam, height, pitch=0, tooth_angle=30, tolerance=0.4, tip_height=0, tooth_height=0, tip_min_fract=0) {
+module ScrewThread(outer_diam = 10, height = 10, pitch=0, tooth_angle=30, tolerance=0.4, tip_height=0, tooth_height=0, tip_min_fract=0, inner_diameter = 0) {
 
   pitch = (pitch==0) ? ThreadPitch(outer_diam) : pitch;
   tooth_height = (tooth_height==0) ? pitch : tooth_height;
   tip_min_fract = (tip_min_fract<0) ? 0 :
     ((tip_min_fract>0.9999) ? 0.9999 : tip_min_fract);
+
+  outer_diam = (inner_diameter != 0) ? inner_diameter + tooth_height/tan(tooth_angle) : outer_diam;
 
   outer_diam_cor = outer_diam + 0.25*tolerance; // Plastic shrinkage correction
   inner_diam = outer_diam - tooth_height/tan(tooth_angle);
